@@ -1,0 +1,36 @@
+::selection {
+    background-color: color-mix(
+        in oklab,
+        var(--mui-palette-primary-dark) 20%,
+        transparent
+    );
+    color: var(--mui-palette-primary-main);
+}
+
+::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background-color: var(--mui-palette-background-default);
+}
+::-webkit-scrollbar-thumb,
+.simplebar-scrollbar::before {
+    background-color: color-mix(
+        in oklab,
+        var(--mui-palette-text-secondary) 50%,
+        transparent
+    );
+}
+
+* {
+    outline: none;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+#nprogress .bar {
+    z-index: calc(var(--mui-zIndex-tooltip) + 100) !important;
+}

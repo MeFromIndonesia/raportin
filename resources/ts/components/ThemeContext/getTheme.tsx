@@ -1,9 +1,9 @@
 import { createTheme } from "@mui/material/styles";
 import focusVisibleStyles from "@/utils/focusVisibleStyles";
 
-import deepOrange from "@mui/material/colors/deepOrange";
+import indigo from "@mui/material/colors/indigo";
 import deepPurple from "@mui/material/colors/deepPurple";
-import red from "@mui/material/colors/red"
+import red from "@mui/material/colors/red";
 
 declare module "@mui/material/styles" {
   interface BreakpointOverrides {
@@ -25,16 +25,7 @@ export default function getTheme(mode: "light" | "dark") {
 
     // fonts
     typography: {
-      fontFamily: [
-        "Mulish",
-        "system-ui",
-        "Avenir",
-        "Helvetica",
-        "Arial",
-        "sans-serif",
-      ]
-        .map((font) => `"${font}"`)
-        .join(", "),
+      fontFamily: ["Mulish", "system-ui", "Avenir", "Helvetica", "Arial", "sans-serif"].map((font) => `"${font}"`).join(", "),
       h1: {
         fontSize: "2.25rem",
         lineHeight: getLineHeight(2.25),
@@ -86,8 +77,8 @@ export default function getTheme(mode: "light" | "dark") {
         fontWeight: 400,
       },
       caption: {
-        fontSize: ".75rem",
-        lineHeight: getLineHeight(0.75),
+        fontSize: ".875rem",
+        lineHeight: getLineHeight(0.875),
         fontWeight: 400,
       },
       overline: {
@@ -119,7 +110,7 @@ export default function getTheme(mode: "light" | "dark") {
         styleOverrides: {
           root: {
             "& .MuiTouchRipple-rippleVisible": {
-              animationDuration: "250ms",
+              animationDuration: "240ms",
             },
           },
         },
@@ -168,13 +159,67 @@ export default function getTheme(mode: "light" | "dark") {
           color: "default",
         },
       },
+      MuiTextField: {
+        styleOverrides: {
+          root: ({ theme }) => ({
+            "& .MuiOutlinedInput-notchedOutline": {
+              transition: theme.transitions.create(["border-color"]),
+            },
+            "& input:-webkit-autofill": {
+              WebkitBoxShadow: `0 0 0px 1000px ${theme.palette.background.default} inset`,
+              WebkitTextFillColor: theme.palette.text.primary,
+              caretColor: theme.palette.text.primary,
+            },
+          }),
+        },
+      },
+      MuiSkeleton: {
+        defaultProps: {
+          animation: "wave",
+        },
+      },
+      // MuiBackdrop: {
+      //   styleOverrides: {
+      //     root: {
+      //       backdropFilter: "blur(4px)",
+      //     },
+      //   },
+      // },
+      MuiDialog: {
+        defaultProps: {
+          PaperProps: {
+            elevation: 1,
+          },
+        },
+      },
+      MuiMenu: {
+        defaultProps: {
+          slotProps: {
+            paper: {
+              elevation: 0,
+            },
+          },
+        },
+        styleOverrides: {
+          root: ({ theme }) => ({
+            "& .MuiPaper-root": {
+              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.2))",
+            },
+            "& .MuiMenuItem-root": {
+              transition: theme.transitions.create(["background-color"], {
+                duration: theme.transitions.duration.shortest,
+              }),
+            },
+          }),
+        },
+      },
     },
 
     // colors
     palette: {
       mode,
       primary: {
-        main: deepOrange.A400,
+        main: indigo.A400,
       },
       secondary: {
         main: deepPurple.A400,

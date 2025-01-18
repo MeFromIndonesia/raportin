@@ -6,10 +6,7 @@ interface Options {
   offset?: number;
 }
 
-const focusVisibleStyles = (
-  theme: Theme,
-  options: Options = { width: 2, offset: 1 }
-) => ({
+const focusVisibleStyles = (theme: Theme, options: Options = { width: 2, offset: 1 }) => ({
   "&:focus": {
     outline: "none",
   },

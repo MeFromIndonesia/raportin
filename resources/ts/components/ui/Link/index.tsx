@@ -6,27 +6,19 @@ import MuiLink from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
 
 const LinkPrimitive = styled(
-    forwardRef<HTMLAnchorElement, InertiaLinkProps>((props, ref) => {
-        const { href, ...other } = props;
+  forwardRef<HTMLAnchorElement, InertiaLinkProps>((props, ref) => {
+    const { href, ...other } = props;
 
-        return <InertiaLink ref={ref} href={href} {...other} />;
-    })
+    return <InertiaLink ref={ref} href={href} {...other} />;
+  })
 )();
 
-interface LinkProps
-    extends Omit<MuiLinkProps<typeof LinkPrimitive>, "component"> {}
+interface LinkProps extends Omit<MuiLinkProps<typeof LinkPrimitive>, "component"> {}
 
 const Link = styled(
-    forwardRef<HTMLAnchorElement, LinkProps>(({ href, ...props }, ref) => {
-        return (
-            <MuiLink
-                ref={ref}
-                component={LinkPrimitive}
-                href={href}
-                {...props}
-            />
-        );
-    })
+  forwardRef<HTMLAnchorElement, LinkProps>(({ href, ...props }, ref) => {
+    return <MuiLink ref={ref} component={LinkPrimitive} href={href} {...props} />;
+  })
 )();
 
 export default Link;

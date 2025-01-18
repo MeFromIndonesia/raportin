@@ -31,6 +31,10 @@ html {
     scroll-behavior: smooth;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 #nprogress .bar {
     z-index: calc(var(--mui-zIndex-tooltip) + 100) !important;
 }

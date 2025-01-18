@@ -8,24 +8,18 @@ interface ContainerProps extends MuiContainerProps {
   disableNavbarOffset?: boolean;
 }
 
-const Container = styled(
-  ({ disableNavbarOffset = false, maxWidth = "2xl", ...props }: ContainerProps) => (
-    <MuiContainer maxWidth={maxWidth} {...props} />
-  )
-)(({ theme, disableNavbarOffset }) => ({
+const Container = styled(({ disableNavbarOffset = false, maxWidth = "2xl", ...props }: ContainerProps) => (
+  <MuiContainer maxWidth={maxWidth} {...props} />
+))(({ theme, disableNavbarOffset }) => ({
   minHeight: "100svh",
-  paddingTop: disableNavbarOffset ? 0 : theme.spacing(16.5),
+  paddingTop: disableNavbarOffset ? 0 : "4.125rem",
   [theme.breakpoints.down("2xl")]: {
-    paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4),
-  },
-  [theme.breakpoints.down("lg")]: {
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-  },
-  [theme.breakpoints.down("sm")]: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
+  },
+  [theme.breakpoints.down("sm")]: {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
   },
 }));
 

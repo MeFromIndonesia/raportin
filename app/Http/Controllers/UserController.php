@@ -9,7 +9,7 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function apiList(Request $request)
     {
         $query = User::query();
 
@@ -33,9 +33,9 @@ class UserController extends Controller
     public function update(int $id, Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string','max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$request->id],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$request->id,
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         $user = User::find($id);

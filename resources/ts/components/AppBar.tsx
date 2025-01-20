@@ -1,10 +1,11 @@
-import type { AppBarProps } from "@mui/material/AppBar";
+import type { FC } from "react";
+import type { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import type { PageProps } from "@/types";
 
 import MuiAppBar from "@mui/material/AppBar";
 import MuiToolbar from "@mui/material/Toolbar";
 import Link, { LinkPrimitive } from "ui/Link";
-// import IconButton from "@mui/material/IconButton";
+import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import ModeToggle from "./ModeToggle";
@@ -14,10 +15,11 @@ import { usePage } from "@inertiajs/react";
 import LoginIcon from "@mui/icons-material/Login";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AccountMenu from "./AccountMenu";
-// import MenuIcon from "@mui/icons-material/Menu";
-// import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import useSidebar from "ui/Sidebar/useSidebar";
 
-const AB = styled(({ ...props }: AppBarProps) => <MuiAppBar position="fixed" color="transparent" elevation={0} {...props} />)(({ theme }) => ({
+const AB = styled(({ ...props }: MuiAppBarProps) => <MuiAppBar position="fixed" color="transparent" elevation={0} {...props} />)(({ theme }) => ({
   height: "4rem",
   backdropFilter: "blur(4px)",
   borderBottom: 1,
@@ -32,7 +34,7 @@ const Toolbar = styled(MuiToolbar)(() => ({
 
 function LoginButton() {
   return (
-    <Button LinkComponent={LinkPrimitive} href={route("login")} variant="contained" startIcon={<LoginIcon />}>
+    <Button LinkComponent={LinkPrimitive} href={route("auth.login")} variant="contained" startIcon={<LoginIcon />}>
       Masuk
     </Button>
   );
@@ -54,13 +56,18 @@ const items = [
   { label: "Contact", href: "/#contact" },
 ];
 
-export default function AppBar() {
+interface AppBarProps {
+  disableSidebar?: boolean;
+}
+
+const AppBar: FC<AppBarProps> = ({ disableSidebar }) => {
   const { props } = usePage<PageProps>();
   const { auth } = props;
+  const { open, toggleSidebar } = useSidebar();
 
   return (
     <AB>
-      <Toolbar>
+      <Toolbar disableGutters sx={{ px: 2 }}>
         <Box
           sx={{
             position: "relative",
@@ -69,9 +76,11 @@ export default function AppBar() {
             alignItems: "center",
           }}
         >
-          {/* <IconButton onClick={() => {}} sx={{ mr: 4 }}>
-                        {!open ? <MenuIcon /> : <MenuOpenIcon />}
-                    </IconButton> */}
+          {auth.user && !disableSidebar && (
+            <IconButton onClick={toggleSidebar} sx={{ ml: -0.75, mr: 3.25 }}>
+              {!open ? <MenuIcon /> : <MenuOpenIcon />}
+            </IconButton>
+          )}
           <Link href="/" variant="h2" underline="none" sx={{ color: "primary.light" }}>
             {appName}
           </Link>
@@ -105,9 +114,11 @@ export default function AppBar() {
           <Box component="li" sx={{ marginRight: 2 }}>
             {auth.user ? <DashboardButton /> : <LoginButton />}
           </Box>
-          <Box component="li">{auth.user ? <AccountMenu /> : <ModeToggle slots={{ tooltip: { placement: "left" } }} edge="end" />}</Box>
+          <Box component="li">{auth.user ? <AccountMenu edge="end" /> : <ModeToggle slots={{ tooltip: { placement: "left" } }} />}</Box>
         </Box>
       </Toolbar>
     </AB>
   );
-}
+};
+
+export default AppBar;

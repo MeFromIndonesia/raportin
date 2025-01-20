@@ -1,3 +1,6 @@
+import type { PageProps } from "@/types";
+
+import { usePage } from "@inertiajs/react";
 import Layout from "@/layouts";
 import Container from "ui/Container";
 import Box from "@mui/material/Box";
@@ -12,6 +15,9 @@ import MoodIcon from "@mui/icons-material/Mood";
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
 export default function Page() {
+  const { props } = usePage<PageProps>();
+  const { auth } = props;
+
   return (
     <>
       <Container disableNavbarOffset maxWidth="xl" sx={{ cursor: "default" }}>
@@ -32,9 +38,9 @@ export default function Page() {
             {appName} adalah solusi digital untuk guru dalam mengelola nilai siswa. Tambah, ubah, atau hapus nilai dengan efisien di mana saja, kapan
             saja.
           </Typography>
-          <Button LinkComponent={LinkPrimitive} variant="contained" href={route("login")} endIcon={<ArrowForwardIosIcon />}>
-            Coba Sekarang
-          </Button>
+            <Button LinkComponent={LinkPrimitive} variant="contained" href={route(auth.user ? "dashboard" : "login")} endIcon={<ArrowForwardIosIcon />}>
+            {auth.user ? "Pergi ke Dashboard" : "Coba Sekarang"}
+            </Button>
         </Box>
         <Box
           id="services"
@@ -174,4 +180,4 @@ export default function Page() {
   );
 }
 
-Page.layout = (page: React.ReactNode) => <Layout title="Selamat datang">{page}</Layout>;
+Page.layout = (page: React.ReactNode) => <Layout title="Selamat datang" disableSidebar>{page}</Layout>;

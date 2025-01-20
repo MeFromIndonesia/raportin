@@ -29,7 +29,7 @@ export default function Page() {
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    post(route("register"));
+    post(route("auth.create"));
   }
 
   return (
@@ -113,7 +113,7 @@ export default function Page() {
           Daftar
         </Button>
         <Box sx={{ mt: 2, textAlign: "center" }}>
-          Sudah punya akun? <Link href={route("login")}>Masuk sekarang</Link>
+          Sudah punya akun? <Link href={route("auth.login")}>Masuk sekarang</Link>
         </Box>
       </Box>
     </Container>

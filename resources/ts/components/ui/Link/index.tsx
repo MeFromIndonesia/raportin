@@ -6,10 +6,8 @@ import MuiLink from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
 
 const LinkPrimitive = styled(
-  forwardRef<HTMLAnchorElement, InertiaLinkProps>((props, ref) => {
-    const { href, ...other } = props;
-
-    return <InertiaLink ref={ref} href={href} {...other} />;
+  forwardRef<HTMLAnchorElement, Omit<InertiaLinkProps, "as">>(({href, ...props}, ref) => {
+    return <InertiaLink ref={ref} href={href} {...props} />;
   })
 )();
 

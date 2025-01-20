@@ -8,17 +8,19 @@ import Typography from "@mui/material/Typography";
 import { Head } from "@inertiajs/react";
 import { usePage } from "@inertiajs/react";
 import useNotifications from "ui/NotificationsContext/useNotifications";
+import Sidebar from "ui/Sidebar";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
 interface LayoutProps {
   children: ReactNode;
   title?: string;
+  disableSidebar?: boolean
 }
 
-const Layout: FC<LayoutProps> = ({ children, title }) => {
+const Layout: FC<LayoutProps> = ({ children, title, disableSidebar }) => {
   const { props } = usePage<PageProps>();
-  const { flash } = props;
+  const { flash, auth } = props;
 
   const { show } = useNotifications();
 
@@ -48,21 +50,24 @@ const Layout: FC<LayoutProps> = ({ children, title }) => {
   return (
     <>
       <Head title={title} />
-      <AppBar />
-      <Box component="main">
-        {children}
-        <Box
-          component="footer"
-          sx={{
-            p: 2,
-            borderWidth: 2,
-            borderStyle: "solid",
-            borderColor: "divider",
-          }}
-        >
-          <Typography variant="body1" textAlign="center">
-            &copy; {new Date().getFullYear()} {appName}. All rights reserved.
-          </Typography>
+      <AppBar disableSidebar={disableSidebar} />
+      <Box sx={{ display: "flex" }}>
+        {auth.user && !disableSidebar && <Sidebar />}
+        <Box component="main" sx={{ flexGrow: 1 }}>
+          {children}
+          <Box
+            component="footer"
+            sx={{
+              p: 2,
+              borderBottomWidth: 2,
+              borderStyle: "solid",
+              borderColor: "divider",
+            }}
+          >
+            <Typography variant="body1" textAlign="center">
+              &copy; {new Date().getFullYear()} {appName}. All rights reserved.
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </>

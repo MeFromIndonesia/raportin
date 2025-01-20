@@ -9,23 +9,23 @@ use Inertia\Inertia;
 
 class AuthController extends Controller
 {
-    public function registerPage()
+    public function register()
     {
         return Inertia::render('Auth/Register');
     }
 
-    public function loginPage()
+    public function login()
     {
         return Inertia::render('Auth/Login');
     }
 
-    public function registerPost(Request $request)
+    public function create(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'rememberMe' => ['boolean'],
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'rememberMe' => 'boolean',
         ]);
 
         User::create([
@@ -40,11 +40,15 @@ class AuthController extends Controller
         return redirect()->route('dashboard')->with('success', 'Anda telah terdaftar!');
     }
 
-    public function loginPost(Request $request)
+    public function authenticate(Request $request)
     {
-        $credentials = $request->only('email', 'password', 'rememberMe');
+        $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string',
+            'rememberMe' => 'boolean',
+        ]);
 
-        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']], $credentials['rememberMe'] ?? false)) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->rememberMe ?? false)) {
             $request->session()->regenerate();
             return redirect()->route('dashboard')->with('success', 'Anda telah masuk!');
         }

@@ -3,7 +3,7 @@ import type { User } from "@/types";
 
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import getData from "@/libs/apis/getData";
+import getPaginatedData from "@/libs/apis/getPaginatedData";
 import Layout from "@/layouts";
 import Container from "ui/Container";
 import Box from "@mui/material/Box";
@@ -26,7 +26,7 @@ export default function Page({ id }: { id: number }) {
     error,
   } = useQuery({
     queryKey: ["users", id],
-    queryFn: () => getData<User>(`/users?id=${id}`),
+    queryFn: () => getPaginatedData<User>(`/users?id=${id}`),
     retry: false,
   });
 

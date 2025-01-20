@@ -1,4 +1,5 @@
-import type { MouseEvent } from "react";
+import type { FC, MouseEvent } from "react";
+import type { IconButtonProps } from "@mui/material/IconButton";
 import type { MenuProps } from "@mui/material/Menu";
 import type { PageProps } from "@/types";
 
@@ -69,9 +70,11 @@ function ThemeMenu({ anchorEl, open, onClose }: { anchorEl: Element | null; open
   );
 }
 
-export default function AccountMenu() {
-  const { props } = usePage<PageProps>();
-  const { auth } = props;
+interface AccountMenuProps extends IconButtonProps {}
+
+const AccountMenu: FC<AccountMenuProps> = ({ onClick, ...props }) => {
+  const { props: PageProps } = usePage<PageProps>();
+  const { auth } = PageProps;
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const [activeMenu, setActiveMenu] = useState<"account" | "theme" | null>(null);
@@ -95,7 +98,14 @@ export default function AccountMenu() {
   return (
     <>
       <Tooltip title="Account Menu">
-        <IconButton onClick={handleClick} size="small">
+        <IconButton
+          onClick={(e) => {
+            handleClick(e);
+            onClick?.(e);
+          }}
+          size="small"
+          {...props}
+        >
           <Avatar sx={{ width: 32, height: 32, fontSize: "0.875rem", fontWeight: 700 }}>{abbreviatedName(auth.user.name)}</Avatar>
         </IconButton>
       </Tooltip>
@@ -149,10 +159,12 @@ export default function AccountMenu() {
       <AlertDialog
         open={logoutAlertOpen}
         onClose={() => setLogoutAlertOpen(false)}
-        url={route("logout")}
+        url={route("auth.logout")}
         title="Konfirmasi Logout"
         message="Keluar akan mengakhiri sesi Anda saat ini. Anda mungkin perlu masuk lagi untuk mengakses fitur-fitur tersebut."
       />
     </>
   );
-}
+};
+
+export default AccountMenu;

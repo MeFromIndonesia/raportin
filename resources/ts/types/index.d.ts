@@ -1,18 +1,32 @@
 import { Config } from "ziggy-js";
 
-type UserRole = "siswa" | "admin"
-
 export interface User {
   id: number;
   name: string;
   email: string;
   email_verified_at?: string;
-  role: UserRole;
   created_at: Date;
-  updated_at: Date | null;
+  updated_at: Date;
 }
 
-interface FlashMessage {
+export interface StudentClass {
+  id: number;
+  grade: number;
+  major: string;
+}
+
+export interface Student {
+  id: number;
+  nisn: number;
+  name: string;
+  place_of_birth: string;
+  date_of_birth: string;
+  student_class: StudentClass;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface FlashMessage {
   success?: string;
   info?: string;
   warning?: string;
@@ -20,6 +34,10 @@ interface FlashMessage {
 }
 
 export interface ApiResponse<T> {
+  data: T[];
+}
+
+export interface PaginatedApiResponse<T> {
   data: T[];
   links: {
     first: string | null;

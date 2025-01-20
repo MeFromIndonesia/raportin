@@ -27,7 +27,7 @@ export default function Page() {
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    post(route("login"));
+    post(route("auth.authenticate"));
   }
 
   return (
@@ -88,7 +88,7 @@ export default function Page() {
           Masuk
         </Button>
         <Box sx={{ mt: 2, textAlign: "center" }}>
-          Belum punya akun? <Link href={route("register")}>Daftar sekarang</Link>
+          Belum punya akun? <Link href={route("auth.register")}>Daftar sekarang</Link>
         </Box>
       </Box>
     </Container>

@@ -1,3 +1,5 @@
+import { autocompleteClasses } from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
 import { createTheme } from "@mui/material/styles";
 import focusVisibleStyles from "@/utils/focusVisibleStyles";
 
@@ -211,6 +213,29 @@ export default function getTheme(mode: "light" | "dark") {
               }),
             },
           }),
+        },
+      },
+      MuiAutocomplete: {
+        defaultProps: {
+          renderOption: (props, option, state, ownerState) => {
+            const { key, ...optionProps } = props;
+            return (
+              <Box
+                key={key}
+                sx={{
+                  borderRadius: "8px",
+                  margin: "5px",
+                  [`&.${autocompleteClasses.option}`]: {
+                    padding: "8px",
+                  },
+                }}
+                component="li"
+                {...optionProps}
+              >
+                {ownerState.getOptionLabel(option)}
+              </Box>
+            );
+          },
         },
       },
     },

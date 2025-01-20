@@ -2,7 +2,7 @@ import type { User } from "@/types";
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import getData from "@/libs/apis/getData";
+import getPaginatedData from "@/libs/apis/getPaginatedData";
 import Layout from "@/layouts";
 import Container from "ui/Container";
 import Box from "@mui/material/Box";
@@ -20,7 +20,6 @@ import Skeleton from "@mui/material/Skeleton";
 import { format } from "date-fns/format";
 import { id } from "date-fns/locale";
 import AlertDialog from "ui/AlertDialog";
-import RoleChip from "ui/RoleChip";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
@@ -30,10 +29,7 @@ function UserTableRow({ user }: { user: User }) {
   return (
     <TableRow key={user.id}>
       <TableCell width="4ch">{user.id}</TableCell>
-      <TableCell>
-        {user.name}
-        <RoleChip role={user.role} sx={{ ml: 0.75 }} />
-      </TableCell>
+      <TableCell>{user.name}</TableCell>
       <TableCell>{user.email}</TableCell>
       <TableCell>{format(new Date(user.created_at), "PPPP", { locale: id })}</TableCell>
       <TableCell>{user.updated_at ? format(new Date(user.updated_at), "PPPP", { locale: id }) : "N/A"}</TableCell>
@@ -67,7 +63,7 @@ export default function Page() {
     error,
   } = useQuery({
     queryKey: ["users"],
-    queryFn: () => getData<User>("/users"),
+    queryFn: () => getPaginatedData<User>("/users"),
   });
 
   const users = usersData?.data;
@@ -77,8 +73,8 @@ export default function Page() {
       <TableCell width="3ch">
         <Skeleton variant="rounded" width="2ch" sx={{ fontSize: "0.875rem" }} />
       </TableCell>
-      <TableCell sx={{ "& .MuiSkeleton-root": { display: "inline-block" } }}>
-        <Skeleton variant="text" width="20ch" sx={{ fontSize: "0.875rem" }} /><Skeleton variant="text" width="7ch" sx={{ fontSize: "0.875rem", ml: 0.75 }} />
+      <TableCell>
+        <Skeleton variant="text" width="20ch" sx={{ fontSize: "0.875rem" }} />
       </TableCell>
       <TableCell>
         <Skeleton variant="text" width="22ch" sx={{ fontSize: "0.875rem" }} />

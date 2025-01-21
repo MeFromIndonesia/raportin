@@ -18,7 +18,10 @@ interface AlertDialogProps {
 }
 
 const AlertDialog: FC<AlertDialogProps> = ({ open, onClose, url, title, message, method = "post" }) => {
-  const handleAction = () => router[method](url);
+  const handleAction = () => {
+    router[method](url);
+    onClose();
+  };
 
   return (
     <Dialog open={open} onClose={onClose}>

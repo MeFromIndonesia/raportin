@@ -59,9 +59,9 @@ const Layout: FC<LayoutProps> = ({ children, title, disableSidebar }) => {
             component="footer"
             sx={{
               p: 2,
-              borderBottomWidth: 2,
-              borderStyle: "solid",
-              borderColor: "divider",
+              borderTopWidth: 2,
+              borderTopStyle: "solid",
+              borderTopColor: "divider",
             }}
           >
             <Typography variant="body1" textAlign="center">

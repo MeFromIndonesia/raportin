@@ -77,11 +77,17 @@ const AppBar: FC<AppBarProps> = ({ disableSidebar }) => {
           }}
         >
           {auth.user && !disableSidebar && (
-            <IconButton onClick={toggleSidebar} sx={{ ml: -0.75, mr: 3.25 }}>
+            <IconButton onClick={toggleSidebar} sx={{ ml: -0.75, mr: 1.25 }}>
               {!open ? <MenuIcon /> : <MenuOpenIcon />}
             </IconButton>
           )}
-          <Link href="/" variant="h2" underline="none" sx={{ color: "primary.light" }}>
+          <Link
+            href="/"
+            variant="h2"
+            underline="none"
+            sx={{ color: "primary.light", display: "inline-flex", alignItems: "center", "& img": { mr: 1 } }}
+          >
+            <img alt="" src="/logo.png" height={36} width={36} loading="lazy" />
             {appName}
           </Link>
         </Box>

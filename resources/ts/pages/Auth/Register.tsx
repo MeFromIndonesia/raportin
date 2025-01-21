@@ -58,7 +58,7 @@ export default function Page() {
           autoFocus
           value={data.name}
           onChange={(e) => setData("name", e.target.value)}
-          error={Boolean(errors.name)}
+          error={!!errors.name}
           helperText={errors.name}
         />
         <TextField
@@ -70,7 +70,7 @@ export default function Page() {
           fullWidth
           value={data.email}
           onChange={(e) => setData("email", e.target.value)}
-          error={Boolean(errors.email)}
+          error={!!errors.email}
           helperText={errors.email}
         />
         <PasswordField
@@ -81,7 +81,7 @@ export default function Page() {
           fullWidth
           value={data.password}
           onChange={(e) => setData("password", e.target.value)}
-          error={Boolean(errors.password)}
+          error={!!errors.password}
           helperText={errors.password}
         />
         <PasswordField
@@ -92,7 +92,7 @@ export default function Page() {
           fullWidth
           value={data.password_confirmation}
           onChange={(e) => setData("password_confirmation", e.target.value)}
-          error={Boolean(errors.password_confirmation)}
+          error={!!errors.password_confirmation}
           helperText={errors.password_confirmation}
         />
         <FormGroup sx={{ my: 1 }}>

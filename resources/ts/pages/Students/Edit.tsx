@@ -1,6 +1,7 @@
 import type { FormEvent } from "react";
+import type { Student } from "@/types";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Layout from "@/layouts";
 import Container from "ui/Container";
 import Box from "@mui/material/Box";
@@ -13,13 +14,24 @@ import { useForm } from "@inertiajs/react";
 import CircularProgress from "@mui/material/CircularProgress";
 import useStudentClass from "@/libs/apis/useStudentClass";
 import dayjs from "dayjs";
+import { useQuery } from "@tanstack/react-query";
+import getData from "@/libs/apis/getData";
+import useStudentClassGrade from "@/utils/useStudentClassGrade";
 
 import LoginIcon from "@mui/icons-material/Login";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
-export default function Page() {
-  const { data, setData, post, processing, errors } = useForm({
+export default function Page({ id }: { id: number }) {
+  const studentQuery = useQuery({
+    queryKey: ["students", id],
+    queryFn: () => getData<Student>(`/students?id=${id}`),
+    retry: false,
+  });
+
+  const student = studentQuery.data?.data[0];
+
+  const { data, setData, put, processing, errors } = useForm({
     nisn: "",
     name: "",
     place_of_birth: "",
@@ -28,14 +40,26 @@ export default function Page() {
     major: "",
   });
   const { data: studentClass, isLoading, isError, error } = useStudentClass();
+  const studentClassQuery = useStudentClassGrade(student?.id || 1);
+
+  useEffect(() => {
+    if (student && studentClassQuery.grade && studentClassQuery.major) {
+      setData("nisn", student.nisn.toString());
+      setData("name", student.name);
+      setData("place_of_birth", student.place_of_birth);
+      setData("date_of_birth", student.date_of_birth);
+      setData("grade", studentClassQuery.grade.toString());
+      setData("major", studentClassQuery.major);
+    }
+  }, [student, studentClassQuery.grade, studentClassQuery.major]);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    post(route("students.create"));
+    put(route("students.update", student?.id));
   }
 
   const uniqueMajors = useMemo(
-    () => studentClass?.data.filter((value, i, self) => i === self.findIndex((item) => item.major === value.major)).map(item => item.major),
+    () => studentClass?.data.filter((value, i, self) => i === self.findIndex((item) => item.major === value.major)).map((item) => item.major),
     [studentClass?.data]
   );
 
@@ -48,9 +72,9 @@ export default function Page() {
         alignItems: "center",
       }}
     >
-      {isLoading ? (
+      {isLoading || studentQuery.isLoading || studentClassQuery.isLoading ? (
         <CircularProgress />
-      ) : !isError && studentClass ? (
+      ) : !isError && !studentQuery.isError && !studentClassQuery.isError && studentClass ? (
         <Box component="form" noValidate method="POST" onSubmit={handleSubmit} sx={{ width: 450 }}>
           <Box sx={{ textAlign: "center", my: 4 }}>
             <Typography variant="h2" gutterBottom>
@@ -116,7 +140,6 @@ export default function Page() {
                   error: !!errors.date_of_birth,
                   helperText: errors.date_of_birth,
                 },
-
               }}
             />
           </Box>
@@ -144,15 +167,27 @@ export default function Page() {
             disabled={processing}
             startIcon={processing ? <CircularProgress size={20} /> : <LoginIcon />}
           >
-            Tambah Siswa
+            Edit Siswa
           </Button>
         </Box>
       ) : (
-        error && (
-          <Typography variant="h3" color="error">
-            {error.message}
-          </Typography>
-        )
+        <>
+          {isError && (
+            <Typography variant="h3" color="error">
+              {error?.message}
+            </Typography>
+          )}
+          {studentQuery.isError && (
+            <Typography variant="h3" color="error">
+              {studentQuery.error?.message}
+            </Typography>
+          )}
+          {studentClassQuery.isError && (
+            <Typography variant="h3" color="error">
+              {studentClassQuery.error?.message}
+            </Typography>
+          )}
+        </>
       )}
     </Container>
   );

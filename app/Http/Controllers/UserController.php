@@ -45,13 +45,13 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        return redirect()->route('dashboard')->with('success', "user dengan id $id berhasil diubah");
+        return redirect()->route('dashboard')->with('success', "Data user telah diperbarui");
     }
 
     public function delete(int $id)
     {
         User::destroy($id);
 
-        return redirect()->route('dashboard')->with('success', "user dengan id $id berhasil dihapus");
+        return redirect()->route('dashboard')->with('success', 'Data user telah dihapus');
     }
 }

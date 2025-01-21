@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "ui/Tooltip";
 import { usePage } from "@inertiajs/react";
-import abbreviatedName from "@/utils/abbreviatedName";
+import getAbbreviation from "@/utils/getAbbreviation";
 import useThemeContext from "./ThemeContext/useThemeContext";
 import { styled } from "@mui/material/styles";
 import AlertDialog from "ui/AlertDialog";
@@ -80,7 +80,7 @@ const AccountMenu: FC<AccountMenuProps> = ({ onClick, ...props }) => {
   const [activeMenu, setActiveMenu] = useState<"account" | "theme" | null>(null);
   const [logoutAlertOpen, setLogoutAlertOpen] = useState(false);
 
-  const open = Boolean(anchorEl);
+  const open = !!anchorEl;
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
@@ -95,6 +95,10 @@ const AccountMenu: FC<AccountMenuProps> = ({ onClick, ...props }) => {
     setActiveMenu("theme");
   };
 
+  const userAvatar = (
+    <Avatar sx={{ width: 32, height: 32, fontSize: "0.875rem", fontWeight: 700 }}>{getAbbreviation(auth.user.name, { maxLength: 2 })}</Avatar>
+  );
+
   return (
     <>
       <Tooltip title="Account Menu">
@@ -106,7 +110,7 @@ const AccountMenu: FC<AccountMenuProps> = ({ onClick, ...props }) => {
           size="small"
           {...props}
         >
-          <Avatar sx={{ width: 32, height: 32, fontSize: "0.875rem", fontWeight: 700 }}>{abbreviatedName(auth.user.name)}</Avatar>
+          {userAvatar}
         </IconButton>
       </Tooltip>
       <Menu
@@ -124,7 +128,7 @@ const AccountMenu: FC<AccountMenuProps> = ({ onClick, ...props }) => {
         }}
       >
         <MenuItem onClick={handleClose}>
-          <Avatar sx={{ width: 32, height: 32, fontSize: "0.875rem", fontWeight: 700 }}>{abbreviatedName(auth.user.name)}</Avatar>
+          {userAvatar}
           <Typography variant="inherit" noWrap>
             {auth.user.name}
           </Typography>

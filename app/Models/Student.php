@@ -11,6 +11,7 @@ class Student extends Model
         'name',
         'place_of_birth',
         'date_of_birth',
+        'student_class_id',
     ];
 
     public function StudentClass()

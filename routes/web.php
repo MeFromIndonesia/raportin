@@ -28,12 +28,18 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('users/{id}/edit', [UserController::class, 'update'])->name('users.update');
+
     Route::delete('users/{id}', [UserController::class, 'delete'])->name('users.delete');
 });
 
 Route::middleware(['auth'])->group(function () {
     Route::get('students/add', [StudentController::class, 'add'])->name('students.add');
     Route::post('students/add', [StudentController::class, 'create'])->name('students.create');
+
+    Route::get('students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
+    Route::put('students/{id}/edit', [StudentController::class, 'update'])->name('students.update');
+
+    Route::delete('students/{id}', [StudentController::class, 'delete'])->name('students.delete');
 });
 
 require __DIR__.'/api.php';

@@ -217,7 +217,7 @@ export default function getTheme(mode: "light" | "dark") {
       },
       MuiAutocomplete: {
         defaultProps: {
-          renderOption: (props, option, state, ownerState) => {
+          renderOption: (props, option, _, ownerState) => {
             const { key, ...optionProps } = props;
             return (
               <Box

@@ -38,7 +38,7 @@ export default function Page() {
             {appName} adalah solusi digital untuk guru dalam mengelola nilai siswa. Tambah, ubah, atau hapus nilai dengan efisien di mana saja, kapan
             saja.
           </Typography>
-            <Button LinkComponent={LinkPrimitive} variant="contained" href={route(auth.user ? "dashboard" : "login")} endIcon={<ArrowForwardIosIcon />}>
+            <Button LinkComponent={LinkPrimitive} variant="contained" href={route(auth.user ? "dashboard" : "auth.login")} endIcon={<ArrowForwardIosIcon />}>
             {auth.user ? "Pergi ke Dashboard" : "Coba Sekarang"}
             </Button>
         </Box>

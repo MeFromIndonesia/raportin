@@ -56,7 +56,7 @@ export default function Page() {
           autoFocus
           value={data.email}
           onChange={(e) => setData("email", e.target.value)}
-          error={Boolean(errors.email)}
+          error={!!errors.email}
           helperText={errors.email}
         />
         <PasswordField
@@ -67,7 +67,7 @@ export default function Page() {
           fullWidth
           value={data.password}
           onChange={(e) => setData("password", e.target.value)}
-          error={Boolean(errors.password)}
+          error={!!errors.password}
           helperText={errors.password}
         />
         <FormGroup sx={{ my: 1 }}>

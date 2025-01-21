@@ -14,22 +14,14 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "ui/Tooltip";
 import { LinkPrimitive } from "ui/Link";
 
-type ListItemButtonProps<C extends React.ElementType = typeof LinkPrimitive> =
-  MuiListItemButtonProps<C> & {
-    href?: string;
-  };
+type ListItemButtonProps<C extends React.ElementType = typeof LinkPrimitive> = MuiListItemButtonProps<C> & {
+  href?: string;
+};
 
 const ListItemButton = styled(
-  forwardRef<HTMLAnchorElement, ListItemButtonProps<typeof LinkPrimitive>>(
-    ({ href, ...props }, ref) => (
-      <MuiListItemButton
-        component={LinkPrimitive}
-        href={href}
-        ref={ref}
-        {...props}
-      />
-    )
-  )
+  forwardRef<HTMLAnchorElement, ListItemButtonProps<typeof LinkPrimitive>>(({ href, ...props }, ref) => (
+    <MuiListItemButton component={LinkPrimitive} href={href} ref={ref} {...props} />
+  ))
 )(({ theme }) => ({
   height: 43,
   borderRadius: 2.5 * theme.shape.borderRadius,
@@ -40,16 +32,10 @@ const ListItemButton = styled(
 }));
 
 const ListItemText = styled(MuiListItemText)(({ theme }) => ({
-  "& .MuiTypography-root": theme.typography.body2
+  "& .MuiTypography-root": theme.typography.body2,
 }));
 
-function MobileSidebarItem({
-  item,
-  onClose,
-}: {
-  item: Items["groupItems"][0];
-  onClose: () => void;
-}) {
+function MobileSidebarItem({ item, onClose }: { item: Items["groupItems"][0]; onClose: () => void }) {
   const currentPage = location.pathname === item.url;
 
   useEffect(() => {
@@ -66,11 +52,7 @@ function MobileSidebarItem({
       secondaryAction={
         item.action && (
           <Tooltip title={item.action.name}>
-            <IconButton
-              LinkComponent={LinkPrimitive}
-              href={item.action.url}
-              edge="end"
-            >
+            <IconButton LinkComponent={LinkPrimitive} href={item.action.url} edge="end">
               <item.action.icon fontSize="small" />
             </IconButton>
           </Tooltip>
@@ -95,29 +77,20 @@ function MobileSidebarItem({
   );
 }
 
-function SidebarItem({
-  item,
-  open,
-}: {
-  item: Items["groupItems"][0];
-  open: boolean;
-}) {
+function SidebarItem({ item, open }: { item: Items["groupItems"][0]; open: boolean }) {
   const currentPage = location.pathname === item.url;
 
   return (
     <ListItem
       disablePadding
-      sx={{ px: 1, "& .MuiListItemButton-root": { pr: 0 } }}
+      sx={{ px: 1, "& .MuiListItemButton-root": { pr: 0 }, "& .MuiIconButton-root": { mr: "0px !important" } }}
       aria-label={item.name}
       secondaryAction={
         <TransitionGroup>
           {item.action && open && (
             <Collapse>
               <Tooltip title={item.action.name}>
-                <IconButton
-                  LinkComponent={LinkPrimitive}
-                  href={item.action.url}
-                >
+                <IconButton LinkComponent={LinkPrimitive} href={item.action.url}>
                   <item.action.icon fontSize="small" />
                 </IconButton>
               </Tooltip>

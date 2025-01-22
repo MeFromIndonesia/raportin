@@ -23,38 +23,6 @@ import AlertDialog from "ui/AlertDialog";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
-function UserTableRow({ user }: { user: User }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <TableRow >
-      <TableCell width="4ch">{user.id}</TableCell>
-      <TableCell>{user.name}</TableCell>
-      <TableCell>{user.email}</TableCell>
-      <TableCell>{dayjs(user.created_at).locale(id).format("dddd, DD MMMM YYYY")}</TableCell>
-      <TableCell>{dayjs(user.updated_at).locale(id).format("dddd, DD MMMM YYYY")}</TableCell>
-      <TableCell width={1}>
-        <Button LinkComponent={LinkPrimitive} href={`/users/${user.id}/edit`}>
-          Edit
-        </Button>
-      </TableCell>
-      <TableCell width={1}>
-        <Button color="error" onClick={() => setOpen(true)}>
-          Delete
-        </Button>
-        <AlertDialog
-          open={open}
-          onClose={() => setOpen(false)}
-          url={route("users.delete", user.id)}
-          method="delete"
-          title="Konfirmasi Hapus"
-          message="Apakah Anda yakin ingin menghapus user ini?"
-        />
-      </TableCell>
-    </TableRow>
-  );
-}
-
 function UserTable() {
   const {
     data: userData,
@@ -65,6 +33,15 @@ function UserTable() {
     queryKey: ["users"],
     queryFn: () => getPaginatedData<User>("/users"),
   });
+  const [opens, setOpens] = useState<boolean[]>([false]);
+
+  function handleOpen(index: number, value: boolean) {
+    setOpens((prev) => {
+      const opens = [...prev];
+      opens[index] = value;
+      return opens;
+    });
+  }
 
   const users = userData?.data;
 
@@ -115,10 +92,36 @@ function UserTable() {
           {isLoading
             ? tableSkeleton
             : !isError && users
-            ? users.map((user) => <UserTableRow user={user} key={user.id} />)
+            ? users.map((user, i) => (
+                <TableRow key={user.id}>
+                  <TableCell width="4ch">{user.id}</TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{dayjs(user.created_at).locale(id).format("dddd, DD MMMM YYYY")}</TableCell>
+                  <TableCell>{dayjs(user.updated_at).locale(id).format("dddd, DD MMMM YYYY")}</TableCell>
+                  <TableCell width={1}>
+                    <Button LinkComponent={LinkPrimitive} href={`/users/${user.id}/edit`}>
+                      Edit
+                    </Button>
+                  </TableCell>
+                  <TableCell width={1}>
+                    <Button color="error" onClick={() => handleOpen(i, true)}>
+                      Delete
+                    </Button>
+                    <AlertDialog
+                      open={opens[i]}
+                      onClose={() => handleOpen(i, false)}
+                      url={route("users.delete", user.id)}
+                      method="delete"
+                      title="Konfirmasi Hapus"
+                      message="Apakah Anda yakin ingin menghapus user ini?"
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
             : error && (
                 <TableRow>
-                  <TableCell sx={{ textAlign: "center" }} colSpan={5}>
+                  <TableCell sx={{ textAlign: "center" }} colSpan={7}>
                     <Typography color="error">{error.message}</Typography>
                   </TableCell>
                 </TableRow>
@@ -126,38 +129,6 @@ function UserTable() {
         </TableBody>
       </Table>
     </TableContainer>
-  );
-}
-
-function StudentTableRow({ student, index }: { student: Student, index: number }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <TableRow>
-      <TableCell width="4ch">{index + 1}</TableCell>
-      <TableCell>{student.nisn}</TableCell>
-      <TableCell>{student.name}</TableCell>
-      <TableCell>{student.place_of_birth}</TableCell>
-      <TableCell>{dayjs(student.date_of_birth).locale(id).format("dddd, DD MMMM YYYY")}</TableCell>
-      <TableCell width={1}>
-        <Button LinkComponent={LinkPrimitive} href={`/students/${student.id}/edit`}>
-          Edit
-        </Button>
-      </TableCell>
-      <TableCell width={1}>
-        <Button color="error" onClick={() => setOpen(true)}>
-          Delete
-        </Button>
-        <AlertDialog
-          open={open}
-          onClose={() => setOpen(false)}
-          url={route("students.delete", student.id)}
-          method="delete"
-          title="Konfirmasi Hapus"
-          message="Apakah Anda yakin ingin menghapus siswa ini?"
-        />
-      </TableCell>
-    </TableRow>
   );
 }
 
@@ -171,6 +142,15 @@ function StudentTable() {
     queryKey: ["students"],
     queryFn: () => getPaginatedData<Student>("/students"),
   });
+  const [opens, setOpens] = useState<boolean[]>([false]);
+
+  function handleOpen(index: number, value: boolean) {
+    setOpens((prev) => {
+      const opens = [...prev];
+      opens[index] = value;
+      return opens;
+    });
+  }
 
   const students = studentData?.data;
 
@@ -221,10 +201,36 @@ function StudentTable() {
           {isLoading
             ? tableSkeleton
             : !isError && students
-            ? students.map((student, i) => <StudentTableRow student={student} index={i} key={student.id} />)
+            ? students.map((student, i) => (
+                <TableRow key={student.id}>
+                  <TableCell width="4ch">{i + 1}</TableCell>
+                  <TableCell>{student.nisn}</TableCell>
+                  <TableCell>{student.name}</TableCell>
+                  <TableCell>{student.place_of_birth}</TableCell>
+                  <TableCell>{dayjs(student.date_of_birth).locale(id).format("dddd, DD MMMM YYYY")}</TableCell>
+                  <TableCell width={1}>
+                    <Button LinkComponent={LinkPrimitive} href={`/students/${student.id}/edit`}>
+                      Edit
+                    </Button>
+                  </TableCell>
+                  <TableCell width={1}>
+                    <Button color="error" onClick={() => handleOpen(i, true)}>
+                      Delete
+                    </Button>
+                    <AlertDialog
+                      open={opens[i]}
+                      onClose={() => handleOpen(i, false)}
+                      url={route("students.delete", student.id)}
+                      method="delete"
+                      title="Konfirmasi Hapus"
+                      message="Apakah Anda yakin ingin menghapus siswa ini?"
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
             : error && (
                 <TableRow>
-                  <TableCell sx={{ textAlign: "center" }} colSpan={5}>
+                  <TableCell sx={{ textAlign: "center" }} colSpan={7}>
                     <Typography color="error">{error.message}</Typography>
                   </TableCell>
                 </TableRow>

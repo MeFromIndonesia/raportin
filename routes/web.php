@@ -19,20 +19,20 @@ Route::middleware(['guest'])->group(function () {
     Route::post('login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['authenticated'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['authenticated'])->group(function () {
     Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('users/{id}/edit', [UserController::class, 'update'])->name('users.update');
 
     Route::delete('users/{id}', [UserController::class, 'delete'])->name('users.delete');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['authenticated'])->group(function () {
     Route::get('students/add', [StudentController::class, 'add'])->name('students.add');
     Route::post('students/add', [StudentController::class, 'create'])->name('students.create');
 

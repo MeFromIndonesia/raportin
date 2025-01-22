@@ -7,7 +7,7 @@ use App\Models\StudentClass;
 use Illuminate\Support\Facades\Route;
 use Tighten\Ziggy\Ziggy;
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['authenticated'])->group(function () {
     Route::get('api/users', [UserController::class, 'apiList'])->name('data.users');
 
     Route::get('api/students', [StudentController::class, 'apiList'])->name('data.students');
